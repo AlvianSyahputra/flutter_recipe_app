@@ -8,21 +8,16 @@ import '../components/grocery_tile.dart';
 
 class GroceryItemScreen extends StatefulWidget {
   final Function(GroceryItem) onCreate;
-
   final Function(GroceryItem) onUpdate;
-
   final GroceryItem originalItem;
-
   final bool isUpdating;
-
   const GroceryItemScreen({
     Key key,
     this.onCreate,
     this.onUpdate,
     this.originalItem,
-  }) : isUpdating = (originalItem != null),
-  super(key: key);
-
+  })  : isUpdating = (originalItem != null),
+        super(key: key);
   @override
   _GroceryItemScreenState createState() => _GroceryItemScreenState();
 }
@@ -34,27 +29,24 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
   DateTime _dueDate = DateTime.now();
   TimeOfDay _timeOfDay = TimeOfDay.now();
   Color _currentColor = Colors.green;
-  int _currentSliverValue = 0;
-
+  int _currentSliderValue = 0;
   @override
   void initState() {
     if (widget.originalItem != null) {
       _nameController.text = widget.originalItem.name;
       _name = widget.originalItem.name;
-      _currentSliverValue = widget.originalItem.quantity;
+      _currentSliderValue = widget.originalItem.quantity;
       _importance = widget.originalItem.importance;
       _currentColor = widget.originalItem.color;
       final date = widget.originalItem.date;
       _timeOfDay = TimeOfDay(hour: date.hour, minute: date.minute);
       _dueDate = date;
     }
-
     _nameController.addListener(() {
       setState(() {
         _name = _nameController.text;
       });
     });
-
     super.initState();
   }
 
@@ -73,26 +65,25 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             icon: const Icon(Icons.check),
             onPressed: () {
               final groceryItem = GroceryItem(
-                id: widget.originalItem?.id ?? const Uuid().v1(),
-                name: _nameController.text,
-                importance: _importance,
-                color: _currentColor,
-                quantity: _currentSliverValue,
-                date: DateTime(
-                  _dueDate.year,
-                  _dueDate.month,
-                  _dueDate.day,
-                  _timeOfDay.hour,
-                  _timeOfDay.minute,
-                )
-              );
-
+                  id: widget.originalItem?.id ?? const Uuid().v1(),
+                  name: _nameController.text,
+                  importance: _importance,
+                  color: _currentColor,
+                  quantity: _currentSliderValue,
+                  date: DateTime(
+                    _dueDate.year,
+                    _dueDate.month,
+                    _dueDate.day,
+                    _timeOfDay.hour,
+                    _timeOfDay.minute,
+                  ));
               if (widget.isUpdating) {
                 widget.onUpdate(groceryItem);
               } else {
                 widget.onCreate(groceryItem);
               }
-            },)
+            },
+          )
         ],
         elevation: 0.0,
         title: Text(
@@ -118,7 +109,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
                 name: _name,
                 importance: _importance,
                 color: _currentColor,
-                quantity: _currentSliverValue,
+                quantity: _currentSliderValue,
                 date: DateTime(
                   _dueDate.year,
                   _dueDate.month,
@@ -126,14 +117,15 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
                   _timeOfDay.hour,
                   _timeOfDay.minute,
                 ),
-              ),),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildnNameField() {
+  Widget buildNameField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -160,7 +152,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
     );
   }
 
-  Widget buildImporatanceField() {
+  Widget buildImportanceField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -210,7 +202,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
     );
   }
 
-  Widget buildDataField(BuildContext context) {
+  Widget buildDateField(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -222,27 +214,28 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
               style: GoogleFonts.lato(fontSize: 28.0),
             ),
             TextButton(
-              child: const Text('Selected'),
+              child: const Text('Select'),
               onPressed: () async {
                 final currentDate = DateTime.now();
-                
                 final selectedDate = await showDatePicker(
-                  context: context, 
-                  initialDate: currentDate, 
-                  firstDate: currentDate, 
+                  context: context,
+                  initialDate: currentDate,
+                  firstDate: currentDate,
                   lastDate: DateTime(currentDate.year + 5),
-                  );
-
-                  setState(() {
+                );
+                setState(
+                  () {
                     if (selectedDate != null) {
                       _dueDate = selectedDate;
                     }
-                  },);
-              },),
+                  },
+                );
+              },
+            ),
           ],
         ),
         if (_dueDate != null)
-        Text('${DateFormat('yyy-MM-dd').format(_dueDate)}'),
+          Text('${DateFormat('yyyy-MM-dd').format(_dueDate)}'),
       ],
     );
   }
@@ -258,19 +251,20 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
               'Time of Day',
               style: GoogleFonts.lato(fontSize: 28.0),
             ),
-            TextButton(child: const Text('Select'),
-            onPressed: () async {
-              final timeOfDay = await showTimePicker( 
-              initialTime: TimeOfDay.now(),
-              context: context,
-              );
-
-              setState(() {
-                if (timeOfDay != null) {
-                  _timeOfDay = timeOfDay;
-                }
-              });
-            },),
+            TextButton(
+              child: const Text('Select'),
+              onPressed: () async {
+                final timeOfDay = await showTimePicker(
+                  initialTime: TimeOfDay.now(),
+                  context: context,
+                );
+                setState(() {
+                  if (timeOfDay != null) {
+                    _timeOfDay = timeOfDay;
+                  }
+                });
+              },
+            ),
           ],
         ),
         if (_timeOfDay != null) Text('${_timeOfDay.format(context)}'),
@@ -286,32 +280,33 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
           children: [
             Container(height: 50, width: 10, color: _currentColor),
             const SizedBox(width: 8),
-            Text('Color', style: GoogleFonts.lato(fontSize: 28.0)),
+            Text('Color', style: GoogleFonts.lato(fontSize: 28)),
           ],
         ),
         TextButton(
           child: const Text('Select'),
           onPressed: () {
             showDialog(
-              context: context, 
+              context: context,
               builder: (context) {
                 return AlertDialog(
                   content: BlockPicker(
-                    pickerColor: Colors.white,
-                    onColorChanged: (color) {
-                      setState(() => _currentColor = color);
-                    }),
-                    actions: [
-                      TextButton(
-                        child: const Text('Save'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  );
-              }, );
-          }, 
+                      pickerColor: Colors.white,
+                      onColorChanged: (color) {
+                        setState(() => _currentColor = color);
+                      }),
+                  actions: [
+                    TextButton(
+                      child: const Text('Save'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
       ],
     );
@@ -325,25 +320,28 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            Text('Quantity', style: GoogleFonts.lato(fontSize: 28.0),
+            Text(
+              'Quantity',
+              style: GoogleFonts.lato(fontSize: 28.0),
             ),
             const SizedBox(width: 16.0),
-            Text(_currentSliverValue.toInt().toString(),
-            style: GoogleFonts.lato(fontSize: 18.0),
+            Text(
+              _currentSliderValue.toInt().toString(),
+              style: GoogleFonts.lato(fontSize: 18.0),
             ),
           ],
         ),
         Slider(
           inactiveColor: _currentColor.withOpacity(0.5),
           activeColor: _currentColor,
-          value: _currentSliverValue.toDouble(),
+          value: _currentSliderValue.toDouble(),
           min: 0.0,
           max: 100.0,
           divisions: 100,
-          label: _currentSliverValue.toInt().toString(),
+          label: _currentSliderValue.toInt().toString(),
           onChanged: (double value) {
             setState(() {
-             _currentSliverValue = value.toInt();
+              _currentSliderValue = value.toInt();
             });
           },
         ),

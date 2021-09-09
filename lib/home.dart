@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fooderlich/screens/grocery_screen.dart';
-import 'screens/recipes_screen.dart';
-import 'models/explore_recipe.dart';
-import 'components/components.dart';
 import 'screens/explore_screen.dart';
+import 'screens/recipes_screen.dart';
 import 'screens/grocery_screen.dart';
+import '../screens/search_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -17,28 +15,9 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    ExploreScreen (),
+    ExploreScreen(),
     RecipesScreen(),
-    const GroceryScreeen(),
-    
-    Card3(
-      recipe: ExploreRecipe(
-        title: 'Vegan Trends',
-        tags: [
-          'Healthy',
-          'Vegan',
-          'Carrots',
-          'Greens',
-          'Wheat',
-          'Pescetarian',
-          'Mint',
-          'Lemongrass',
-          'Salad',
-          'Water',
-        ],
-        backgroundImage: 'assets/magazine_pics/mag3.png'
-      )
-    ),
+   const GroceryScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -49,12 +28,22 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: Text(
           'Fooderlich',
           style: Theme.of(context).textTheme.headline6,
         ),
+        actions: [
+          IconButton(onPressed: (){
+            showSearch(
+              context: context, 
+              delegate: SearchScreen());
+          }, icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -63,18 +52,18 @@ class _HomeState extends State<Home> {
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard),
+            icon: Icon(Icons.explore),
             label: 'Explore',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard),
+            icon: Icon(Icons.book),
             label: 'Recipes',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard),
+            icon: Icon(Icons.list),
             label: 'To Buy',
           ),
-        ]
+        ],
       ),
     );
   }

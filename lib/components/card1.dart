@@ -5,7 +5,7 @@ import '../models/models.dart';
 class Card1 extends StatelessWidget {
   final ExploreRecipe recipe;
 
-  const Card1({Key key, this.recipe}) : super(key: key);
+  const Card1({Key key,   this.recipe}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class Card1 extends StatelessWidget {
               bottom: 10,
               right: 0,
             )
-          ]
+          ],
         ),
         padding: const EdgeInsets.all(16),
         constraints: const BoxConstraints.expand(width: 350, height: 450),

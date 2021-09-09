@@ -5,14 +5,12 @@ import '../models/grocery_item.dart';
 
 class GroceryTile extends StatelessWidget {
   final GroceryItem item;
-
   final Function(bool) onComplete;
-  
   final TextDecoration textDecoration;
-
-  GroceryTile({Key key, this.item, this.onComplete}) : textDecoration = item.isComplete ? TextDecoration.lineThrough : TextDecoration.none,
-  super(key: key);
-
+  GroceryTile({Key key, this.item, this.onComplete})
+      : textDecoration =
+            item.isComplete ? TextDecoration.lineThrough : TextDecoration.none,
+        super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,7 +21,7 @@ class GroceryTile extends StatelessWidget {
           Row(
             children: [
               Container(width: 5.0, color: item.color),
-              const SizedBox(width: 16.0,),
+              const SizedBox(width: 16.0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,39 +29,38 @@ class GroceryTile extends StatelessWidget {
                   Text(
                     item.name,
                     style: GoogleFonts.lato(
-                      decoration: textDecoration,
-                      fontSize: 21.0,
-                      fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4.0),
-                    buildDate(),
-                    const SizedBox(height: 4.0),
-                    buildImportance(),
+                        decoration: textDecoration,
+                        fontSize: 21.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4.0),
+                  buildDate(),
+                  const SizedBox(height: 4.0),
+                  buildImportance(),
                 ],
-              )
-            ],),
-            Row(
-              children: [
-                Text(item.quantity.toString(),
-                style: GoogleFonts.lato(
-                  decoration: textDecoration, fontSize: 21
-                )),
-                buildCheckbox()
-              ],
-            )
-        ],),);
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(item.quantity.toString(),
+                  style: GoogleFonts.lato(
+                      decoration: textDecoration, fontSize: 21)),
+              buildCheckbox()
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildImportance() {
     if (item.importance == Importance.low) {
-      return Text('Low', style: GoogleFonts.lato(
-        decoration: textDecoration
-      ));
+      return Text('Low', style: GoogleFonts.lato(decoration: textDecoration));
     } else if (item.importance == Importance.medium) {
       return Text('Medium',
-      style: GoogleFonts.lato(
-        fontWeight: FontWeight.w800, decoration: textDecoration
-      ));
+          style: GoogleFonts.lato(
+              fontWeight: FontWeight.w800, decoration: textDecoration));
     } else if (item.importance == Importance.high) {
       return Text(
         'High',
@@ -87,9 +84,12 @@ class GroceryTile extends StatelessWidget {
     );
   }
 
-  WidgetbuildCheckbox() {
+  Widget buildCheckbox() {
     return Checkbox(
+      // 1
       value: item.isComplete,
-      onChanged: onComplete,);
+      // 2
+      onChanged: onComplete,
+    );
   }
 }
